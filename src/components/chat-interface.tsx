@@ -22,49 +22,62 @@ type Message = {
 
 // Component to render markdown content from the AI
 const AssistantMessageContent = ({ content }: { content: string }) => {
+  const processYoutubeLink = (href: string | undefined) => {
+    if (!href) return null;
+    let videoId = null;
+
+    if (href.includes('youtube.com/watch?v=')) {
+      videoId = href.split('v=')[1]?.split('&')[0];
+    } else if (href.includes('youtu.be/')) {
+      videoId = href.split('youtu.be/')[1]?.split('?')[0];
+    }
+
+    if (!videoId) return null;
+
+    return (
+      <div className="aspect-video my-4">
+        <iframe
+          className="w-full h-full rounded-lg"
+          src={`https://www.youtube.com/embed/${videoId}`}
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
+      </div>
+    );
+  };
+
   return (
-    <div className="prose prose-sm dark:prose-invert max-w-none text-foreground prose-headings:text-primary prose-p:my-2 prose-ul:my-2 prose-li:my-1">
+    <div className="prose prose-sm dark:prose-invert max-w-none text-foreground prose-p:my-2 prose-ul:my-2 prose-li:my-1 prose-headings:font-headline prose-headings:text-primary prose-table:border prose-th:p-2 prose-th:border prose-td:p-2 prose-td:border">
       <ReactMarkdown
         components={{
           a: ({ node, ...props }) => {
-            const isYoutubeLink = props.href?.includes('youtube.com/watch?v=');
-            if (isYoutubeLink) {
-              const videoId = props.href?.split('v=')[1];
-              return (
-                <div className="aspect-video my-4">
-                  <iframe
-                    className="w-full h-full rounded-lg"
-                    src={`https://www.youtube.com/embed/${videoId}`}
-                    title="YouTube video player"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              )
-            }
-             // Custom handling for [YOUTUBE](VIDEO_ID) format
-            const youtubeMatch = props.children?.[0]?.toString().match(/\[YOUTUBE\]\((.+?)\)/);
+            const youtubeEmbed = processYoutubeLink(props.href);
+            if (youtubeEmbed) return youtubeEmbed;
+            
+            // Custom handling for [YOUTUBE](VIDEO_ID) format
+            const childrenText = Array.isArray(props.children) ? props.children.join('') : props.children;
+            const youtubeMatch = childrenText?.toString().match(/\[YOUTUBE\]\((.+?)\)/);
             if(youtubeMatch) {
               const videoId = youtubeMatch[1];
-              return (
-                <div className="aspect-video my-4">
-                  <iframe
-                    className="w-full h-full rounded-lg"
-                    src={`https://www.youtube.com/embed/${videoId}`}
-                    title="YouTube video player"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              );
+               const youtubeEmbedById = processYoutubeLink(`https://www.youtube.com/watch?v=${videoId}`);
+               if(youtubeEmbedById) return youtubeEmbedById;
             }
-            return <a {...props} target="_blank" rel="noopener noreferrer" className="text-primary underline" />;
+
+            return <a {...props} target="_blank" rel="noopener noreferrer" className="text-primary underline hover:text-primary/80" />;
           },
-          img: ({ node, ...props }) => (
-            <div className="relative aspect-video my-4">
-              <Image src={props.src!} alt={props.alt!} layout="fill" objectFit="cover" className="rounded-lg" />
-            </div>
-          ),
+          img: ({ node, ...props }) => {
+             if (!props.src || !props.alt) return null;
+             return (
+              <div className="relative aspect-video my-4 rounded-lg overflow-hidden border">
+                <Image src={props.src} alt={props.alt} layout="fill" objectFit="cover" className="rounded-lg" />
+              </div>
+            )
+          },
+          table: ({ node, ...props }) => <table className="w-full my-4 border-collapse" {...props} />,
+          thead: ({ node, ...props }) => <thead className="bg-muted/50" {...props} />,
+          th: ({ node, ...props }) => <th className="p-2 border text-left font-semibold" {...props} />,
+          td: ({ node, ...props }) => <td className="p-2 border" {...props} />,
         }}
       >
         {content}
@@ -216,7 +229,7 @@ export function ChatInterface() {
                 )}
               >
                 {message.role === "assistant" && (
-                  <Avatar className="h-8 w-8">
+                  <Avatar className="h-8 w-8 shrink-0">
                     <AvatarFallback className="bg-primary text-primary-foreground">
                       <HeartPulse className="h-5 w-5" />
                     </AvatarFallback>
@@ -224,7 +237,7 @@ export function ChatInterface() {
                 )}
                 <div
                   className={cn(
-                    "max-w-xl w-fit rounded-lg px-4 py-2",
+                    "max-w-2xl w-fit rounded-lg px-4 py-2",
                     message.role === "user"
                       ? "bg-primary text-primary-foreground"
                       : "bg-muted"
@@ -237,7 +250,7 @@ export function ChatInterface() {
                   )}
                 </div>
                 {message.role === "user" && (
-                  <Avatar className="h-8 w-8">
+                  <Avatar className="h-8 w-8 shrink-0">
                     <AvatarFallback>
                       <UserIcon className="h-5 w-5" />
                     </AvatarFallback>
@@ -247,7 +260,7 @@ export function ChatInterface() {
             ))}
             {isPending && (
               <div className="flex items-start gap-3 justify-start">
-                <Avatar className="h-8 w-8">
+                <Avatar className="h-8 w-8 shrink-0">
                   <AvatarFallback className="bg-primary text-primary-foreground">
                     <HeartPulse className="h-5 w-5" />
                   </AvatarFallback>
