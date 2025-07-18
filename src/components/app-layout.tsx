@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, from 'react';
+import React from 'react';
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -57,7 +57,7 @@ function SidebarNav({ isCollapsed }: { isCollapsed: boolean }) {
 function MobileNav() {
   const pathname = usePathname();
   return (
-      <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+      <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 md:hidden">
         <Sheet>
           <SheetTrigger asChild>
             <Button size="icon" variant="outline" className="sm:hidden">
@@ -132,7 +132,7 @@ function MobileNav() {
 function DesktopNav() {
   const [isCollapsed, setIsCollapsed] = React.useState(false);
   return (
-    <div className="hidden md:flex min-h-screen w-full">
+    <div className="hidden md:flex min-h-screen">
       <aside
         className={cn(
           "hidden md:flex flex-col border-r bg-card transition-all duration-300 ease-in-out",
@@ -166,18 +166,11 @@ function DesktopNav() {
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [isClient, setIsClient] = React.useState(false);
 
-  React.useEffect(() => {
-    setIsClient(true);
-  }, []);
-
+  // The login page has a different layout, so we render it separately.
+  // This is handled by Next.js route groups. This component is only for the authenticated app.
   if (pathname === '/login') {
     return <>{children}</>;
-  }
-  
-  if (!isClient) {
-    return null;
   }
 
   return (
