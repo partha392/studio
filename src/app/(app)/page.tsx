@@ -1,3 +1,4 @@
+
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Activity, AlertTriangle, Users, Network } from "lucide-react";
@@ -6,7 +7,7 @@ import { HealthTips } from "@/components/health-tips";
 export default function DashboardPage() {
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-      <PageHeader title="Dashboard" description="Welcome to Swasthya AI. Here's a summary of your activities." />
+      <PageHeader title="Dashboard" description="Welcome to Swasthya AI." />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

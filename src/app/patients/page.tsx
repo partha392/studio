@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
 import { PatientList } from "@/components/patient-list";
@@ -16,11 +17,11 @@ const DUMMY_PATIENTS: Patient[] = [
 export default function PatientsPage() {
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-      <PageHeader title="Patient Records" description="Manage and view patient profiles.">
+      <PageHeader title="Patients" description="Manage and view patient profiles.">
         <Link href="/patients/new">
           <Button>
             <PlusCircle className="mr-2 h-4 w-4" />
-            Add New Patient
+            Add Patient
           </Button>
         </Link>
       </PageHeader>
