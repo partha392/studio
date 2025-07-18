@@ -1,3 +1,6 @@
+
+'use client';
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,8 +13,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { HeartPulse } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    router.push('/');
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-background p-4">
       <Card className="mx-auto max-w-sm w-full">
@@ -25,7 +36,7 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4" action="/">
+          <form className="space-y-4" onSubmit={handleLogin}>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
