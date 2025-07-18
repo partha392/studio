@@ -35,7 +35,7 @@ const prompt = ai.definePrompt({
 Answer the user's question clearly and concisely.
 
 When appropriate, enhance your response with the following resources to make it more helpful:
-- **External Links:** Provide links to reputable medical resources (e.g., World Health Organization, CDC, WebMD). Use Markdown format: [Link Text](URL)
+- **External Links:** Provide links to reputable medical resources (e.g., World Health Organization, CDC, WebMD, Wikipedia). Use Markdown format: [Link Text](URL)
 - **Images:** If a visual aid would be helpful, include an image. Use Markdown format: ![Alt Text](Image URL)
 - **YouTube Videos:** If a video explanation would be beneficial, embed a relevant YouTube video. Use the format: [YOUTUBE](VIDEO_ID) (e.g., [YOUTUBE](dQw4w9WgXcQ))
 
