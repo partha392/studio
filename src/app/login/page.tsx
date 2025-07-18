@@ -25,7 +25,7 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4">
+          <form className="space-y-4" action="/">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -33,6 +33,7 @@ export default function LoginPage() {
                 type="email"
                 placeholder="m@example.com"
                 required
+                defaultValue="healthworker@swasth.ai"
               />
             </div>
             <div className="space-y-2">
@@ -45,7 +46,7 @@ export default function LoginPage() {
                   Forgot your password?
                 </Link>
               </div>
-              <Input id="password" type="password" required />
+              <Input id="password" type="password" required defaultValue="password123" />
             </div>
             <Button type="submit" className="w-full">
               Login
