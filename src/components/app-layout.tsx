@@ -41,7 +41,7 @@ function DesktopSidebar() {
             <div className="flex-1 overflow-auto p-2">
                  <nav className="grid items-start gap-2">
                   {navItems.map((item) => {
-                    const isActive = pathname === item.href;
+                    const isActive = pathname.startsWith(item.href);
                     return (
                       <Link href={item.href} key={item.label}>
                         <Button
@@ -124,7 +124,7 @@ function MobileBottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-10 flex h-16 items-center justify-around border-t bg-background md:hidden">
       {navItems.map((item) => {
-        const isActive = pathname === item.href;
+        const isActive = pathname.startsWith(item.href);
         return (
           <Link
             href={item.href}
