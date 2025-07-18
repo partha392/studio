@@ -12,68 +12,63 @@ import { voiceEnabledChatbot } from "@/ai/flows/voice-enabled-chatbot";
 import { ScrollArea } from "./ui/scroll-area";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import Image from "next/image";
+import ReactMarkdown from 'react-markdown';
+
 
 type Message = {
   role: "user" | "assistant";
   content: string;
 };
 
-// Component to render markdown-like content from the AI
+// Component to render markdown content from the AI
 const AssistantMessageContent = ({ content }: { content: string }) => {
-  const parts = content.split(/(\[YOUTUBE\]\(.+?\)|!\[.*?\]\(.*?\)|\[.*?\]\(.*?\))/g);
-
   return (
-    <div className="text-sm space-y-2">
-      {parts.map((part, index) => {
-        const youtubeMatch = part.match(/\[YOUTUBE\]\((.+?)\)/);
-        if (youtubeMatch) {
-          const videoId = youtubeMatch[1];
-          return (
-            <div key={index} className="aspect-video">
-              <iframe
-                className="w-full h-full rounded-lg"
-                src={`https://www.youtube.com/embed/${videoId}`}
-                title="YouTube video player"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
+    <div className="prose prose-sm dark:prose-invert max-w-none text-foreground prose-headings:text-primary prose-p:my-2 prose-ul:my-2 prose-li:my-1">
+      <ReactMarkdown
+        components={{
+          a: ({ node, ...props }) => {
+            const isYoutubeLink = props.href?.includes('youtube.com/watch?v=');
+            if (isYoutubeLink) {
+              const videoId = props.href?.split('v=')[1];
+              return (
+                <div className="aspect-video my-4">
+                  <iframe
+                    className="w-full h-full rounded-lg"
+                    src={`https://www.youtube.com/embed/${videoId}`}
+                    title="YouTube video player"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              )
+            }
+             // Custom handling for [YOUTUBE](VIDEO_ID) format
+            const youtubeMatch = props.children?.[0]?.toString().match(/\[YOUTUBE\]\((.+?)\)/);
+            if(youtubeMatch) {
+              const videoId = youtubeMatch[1];
+              return (
+                <div className="aspect-video my-4">
+                  <iframe
+                    className="w-full h-full rounded-lg"
+                    src={`https://www.youtube.com/embed/${videoId}`}
+                    title="YouTube video player"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              );
+            }
+            return <a {...props} target="_blank" rel="noopener noreferrer" className="text-primary underline" />;
+          },
+          img: ({ node, ...props }) => (
+            <div className="relative aspect-video my-4">
+              <Image src={props.src!} alt={props.alt!} layout="fill" objectFit="cover" className="rounded-lg" />
             </div>
-          );
-        }
-
-        const imageMatch = part.match(/!\[(.*?)\]\((.*?)\)/);
-        if (imageMatch) {
-            const alt = imageMatch[1];
-            const url = imageMatch[2];
-            return (
-              <div key={index} className="relative aspect-video">
-                  <Image src={url} alt={alt} layout="fill" objectFit="cover" className="rounded-lg" />
-              </div>
-            );
-        }
-
-        const linkMatch = part.match(/\[(.*?)\]\((.*?)\)/);
-        if (linkMatch) {
-          const text = linkMatch[1];
-          const url = linkMatch[2];
-          return (
-            <a
-              key={index}
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary underline"
-            >
-              {text}
-            </a>
-          );
-        }
-
-        // Render paragraphs for text blocks separated by newlines
-        return part.split('\n').map((paragraph, pIndex) => (
-            paragraph.trim() && <p key={`${index}-${pIndex}`}>{paragraph}</p>
-        ));
-      })}
+          ),
+        }}
+      >
+        {content}
+      </ReactMarkdown>
     </div>
   );
 };
