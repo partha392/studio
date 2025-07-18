@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState } from "react";
+import React, from 'react';
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -92,43 +92,47 @@ function MobileNav() {
             </div>
           </SheetContent>
         </Sheet>
-        <div className="flex-grow flex justify-center">
+        <div className="flex-grow flex justify-center sm:hidden">
           <Link href="/" className="flex items-center gap-2 font-semibold text-primary">
              <HeartPulse className="h-6 w-6" />
              <span className="font-headline">Swasth AI</span>
           </Link>
         </div>
-         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              className="overflow-hidden rounded-full"
-            >
-              <Avatar>
-                <AvatarImage src="https://placehold.co/32x32.png" alt="User" data-ai-hint="user avatar" />
-                <AvatarFallback>HW</AvatarFallback>
-              </Avatar>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Support</DropdownMenuItem>
-            <DropdownMenuSeparator />
-             <DropdownMenuItem>
-              <Link href="/login">Logout</Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+         <div className="flex w-full items-center gap-4 md:ml-auto md:flex-initial">
+          <div className="ml-auto flex-1 sm:flex-grow-0" />
+            <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="overflow-hidden rounded-full"
+              >
+                <Avatar>
+                  <AvatarImage src="https://placehold.co/32x32.png" alt="User" data-ai-hint="user avatar" />
+                  <AvatarFallback>HW</AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuSeparator />
+               <DropdownMenuItem>
+                <Link href="/login">Logout</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+         </div>
       </header>
   )
 }
 
-function DesktopNav({isCollapsed, setIsCollapsed}: {isCollapsed: boolean, setIsCollapsed: (isCollapsed: boolean) => void}) {
+function DesktopNav() {
+  const [isCollapsed, setIsCollapsed] = React.useState(false);
   return (
-    <>
+    <div className="hidden md:flex min-h-screen w-full">
       <aside
         className={cn(
           "hidden md:flex flex-col border-r bg-card transition-all duration-300 ease-in-out",
@@ -155,56 +159,33 @@ function DesktopNav({isCollapsed, setIsCollapsed}: {isCollapsed: boolean, setIsC
           </Button>
         </div>
       </aside>
-      <div className="flex flex-col flex-1">
-        <header className="sticky top-0 z-10 flex h-16 items-center justify-end gap-4 border-b bg-background px-6">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="overflow-hidden rounded-full"
-              >
-                <Avatar>
-                  <AvatarImage src="https://placehold.co/32x32.png" alt="User" data-ai-hint="user avatar" />
-                  <AvatarFallback>HW</AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-               <DropdownMenuItem>
-                <Link href="/login">Logout</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </header>
-      </div>
-    </>
+    </div>
   )
 }
 
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isClient, setIsClient] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   if (pathname === '/login') {
     return <>{children}</>;
   }
+  
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <div className="flex min-h-screen w-full">
-      <div className="md:hidden flex min-h-screen w-full flex-col bg-muted/40">
+      <DesktopNav />
+      <div className="flex flex-col flex-1 overflow-x-hidden bg-muted/40">
         <MobileNav />
-        <main className="flex-1 overflow-x-hidden">{children}</main>
-      </div>
-      <div className="hidden md:flex md:w-full">
-          <DesktopNav isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-          <main className="flex-1 overflow-x-hidden bg-muted/40">{children}</main>
+        <main className="flex-1">{children}</main>
       </div>
     </div>
   );
