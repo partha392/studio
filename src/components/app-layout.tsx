@@ -58,18 +58,28 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient) return;
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
     checkIsMobile();
     window.addEventListener("resize", checkIsMobile);
     return () => window.removeEventListener("resize", checkIsMobile);
-  }, []);
+  }, [isClient]);
 
   if (pathname === '/login') {
     return <>{children}</>;
+  }
+
+  if (!isClient) {
+    return null; // Or a loading skeleton
   }
 
   if (isMobile) {
