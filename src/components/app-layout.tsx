@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -54,110 +54,81 @@ function SidebarNav({ isCollapsed }: { isCollapsed: boolean }) {
   );
 }
 
-export function AppLayout({ children }: { children: React.ReactNode }) {
+function MobileNav() {
   const pathname = usePathname();
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isClient) return;
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkIsMobile();
-    window.addEventListener("resize", checkIsMobile);
-    return () => window.removeEventListener("resize", checkIsMobile);
-  }, [isClient]);
-
-  if (pathname === '/login') {
-    return <>{children}</>;
-  }
-
-  if (!isClient) {
-    return null; // Or a loading skeleton
-  }
-
-  if (isMobile) {
-    return (
-      <div className="flex min-h-screen w-full flex-col bg-muted/40">
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button size="icon" variant="outline" className="sm:hidden">
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle Menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="sm:max-w-xs p-0">
-              <div className="flex h-full flex-col">
-                <div className="flex h-[60px] items-center border-b px-6">
-                  <Link href="/" className="flex items-center gap-2 font-semibold text-primary">
-                    <HeartPulse className="h-6 w-6" />
-                    <span>Swasth AI</span>
-                  </Link>
-                </div>
-                <div className="flex-1 overflow-auto py-2">
-                  <nav className="grid items-start px-4 text-sm font-medium">
-                    {navItems.map((item) => {
-                      const isActive = pathname === item.href;
-                      return (
-                      <Link
-                        href={item.href}
-                        key={item.label}
-                        className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary", isActive && "bg-muted text-primary")}
-                      >
-                        <item.icon className="h-4 w-4" />
-                        {item.label}
-                      </Link>
-                    )})}
-                  </nav>
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
-          <div className="flex-grow flex justify-center">
-            <Link href="/" className="flex items-center gap-2 font-semibold text-primary">
-               <HeartPulse className="h-6 w-6" />
-               <span className="font-headline">Swasth AI</span>
-            </Link>
-          </div>
-           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="overflow-hidden rounded-full"
-              >
-                <Avatar>
-                  <AvatarImage src="https://placehold.co/32x32.png" alt="User" data-ai-hint="user avatar" />
-                  <AvatarFallback>HW</AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-               <DropdownMenuItem>
-                <Link href="/login">Logout</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </header>
-        <main className="flex-1 overflow-x-hidden">{children}</main>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex min-h-screen w-full">
+      <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button size="icon" variant="outline" className="sm:hidden">
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle Menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="sm:max-w-xs p-0">
+            <div className="flex h-full flex-col">
+              <div className="flex h-[60px] items-center border-b px-6">
+                <Link href="/" className="flex items-center gap-2 font-semibold text-primary">
+                  <HeartPulse className="h-6 w-6" />
+                  <span>Swasth AI</span>
+                </Link>
+              </div>
+              <div className="flex-1 overflow-auto py-2">
+                <nav className="grid items-start px-4 text-sm font-medium">
+                  {navItems.map((item) => {
+                    const isActive = pathname === item.href;
+                    return (
+                    <Link
+                      href={item.href}
+                      key={item.label}
+                      className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary", isActive && "bg-muted text-primary")}
+                    >
+                      <item.icon className="h-4 w-4" />
+                      {item.label}
+                    </Link>
+                  )})}
+                </nav>
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
+        <div className="flex-grow flex justify-center">
+          <Link href="/" className="flex items-center gap-2 font-semibold text-primary">
+             <HeartPulse className="h-6 w-6" />
+             <span className="font-headline">Swasth AI</span>
+          </Link>
+        </div>
+         <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="overflow-hidden rounded-full"
+            >
+              <Avatar>
+                <AvatarImage src="https://placehold.co/32x32.png" alt="User" data-ai-hint="user avatar" />
+                <AvatarFallback>HW</AvatarFallback>
+              </Avatar>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuItem>Support</DropdownMenuItem>
+            <DropdownMenuSeparator />
+             <DropdownMenuItem>
+              <Link href="/login">Logout</Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </header>
+  )
+}
+
+function DesktopNav({isCollapsed, setIsCollapsed}: {isCollapsed: boolean, setIsCollapsed: (isCollapsed: boolean) => void}) {
+  return (
+    <>
       <aside
         className={cn(
           "hidden md:flex flex-col border-r bg-card transition-all duration-300 ease-in-out",
@@ -211,7 +182,29 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
-        <main className="flex-1 overflow-x-hidden bg-muted/40">{children}</main>
+      </div>
+    </>
+  )
+}
+
+
+export function AppLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  if (pathname === '/login') {
+    return <>{children}</>;
+  }
+
+  return (
+    <div className="flex min-h-screen w-full">
+      <div className="md:hidden flex min-h-screen w-full flex-col bg-muted/40">
+        <MobileNav />
+        <main className="flex-1 overflow-x-hidden">{children}</main>
+      </div>
+      <div className="hidden md:flex md:w-full">
+          <DesktopNav isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+          <main className="flex-1 overflow-x-hidden bg-muted/40">{children}</main>
       </div>
     </div>
   );
