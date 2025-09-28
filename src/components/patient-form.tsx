@@ -62,9 +62,10 @@ export function PatientForm() {
     resolver: zodResolver(patientFormSchema),
     defaultValues: {
       name: "",
-      age: undefined,
+      age: 0,
       symptoms: "",
       location: "",
+      gender: undefined,
       consent: false,
     },
   });
