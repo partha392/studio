@@ -1,21 +1,17 @@
 
+"use client";
+
 import Link from "next/link";
 import { AppLayout } from "@/components/app-layout";
 import { PageHeader } from "@/components/page-header";
 import { PatientList } from "@/components/patient-list";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import type { Patient } from "@/lib/types";
-
-const DUMMY_PATIENTS: Patient[] = [
-    { id: 'PAT001', name: 'Aarav Sharma', age: 45, gender: 'Male', location: 'Guwahati', symptoms: 'Persistent cough, fever', risk: 'High', lastVisit: '2024-05-10' },
-    { id: 'PAT002', name: 'Binita Das', age: 32, gender: 'Female', location: 'Jorhat', symptoms: 'Shortness of breath', risk: 'Medium', lastVisit: '2024-05-12' },
-    { id: 'PAT003', name: 'Chandan Kumar', age: 28, gender: 'Male', location: 'Dibrugarh', symptoms: 'Skin rash, itching', risk: 'Low', lastVisit: '2024-05-15' },
-    { id: 'PAT004', name: 'Deepa Singh', age: 55, gender: 'Female', location: 'Nagaon', symptoms: 'Fatigue, paleness', risk: 'High', lastVisit: '2024-05-08' },
-    { id: 'PAT005', name: 'Emon Hazarika', age: 60, gender: 'Male', location: 'Tezpur', symptoms: 'Chest pain, cough', risk: 'High', lastVisit: '2024-05-14' },
-];
+import { usePatientStore } from "@/hooks/use-patient-store";
 
 export default function PatientsPage() {
+  const patients = usePatientStore((state) => state.patients);
+
   return (
     <AppLayout>
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
@@ -27,7 +23,22 @@ export default function PatientsPage() {
             </Button>
           </Link>
         </PageHeader>
-        <PatientList patients={DUMMY_PATIENTS} />
+        {patients.length > 0 ? (
+          <PatientList patients={patients} />
+        ) : (
+          <div className="flex flex-col items-center justify-center text-center py-16 px-4 border-2 border-dashed rounded-lg">
+            <h2 className="text-xl font-semibold text-foreground">No Patients Found</h2>
+            <p className="text-muted-foreground mt-2 mb-4 max-w-sm">
+              It looks like there are no patient profiles yet. Get started by adding a new patient.
+            </p>
+            <Link href="/patients/new">
+              <Button>
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Add New Patient
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
     </AppLayout>
   );

@@ -30,12 +30,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Upload, Stethoscope, MessageSquareQuote, AlertTriangle, Loader2 } from "lucide-react";
+import { Upload, Stethoscope, MessageSquareQuote, AlertTriangle, Loader2, Save } from "lucide-react";
 import React, { useState, useTransition } from "react";
 import { suggestDiagnosis } from "@/ai/flows/suggest-diagnosis";
 import { generateTriageResponse } from "@/ai/flows/generate-triage-response";
 import { useToast } from "@/hooks/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useRouter } from "next/navigation";
+import { usePatientStore } from "@/hooks/use-patient-store";
 
 const patientFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -51,12 +53,15 @@ const patientFormSchema = z.object({
 type PatientFormValues = z.infer<typeof patientFormSchema>;
 
 export function PatientForm() {
-  const [isPending, startTransition] = useTransition();
+  const [isDiagnosisPending, startDiagnosisTransition] = useTransition();
   const [isTriagePending, startTriageTransition] = useTransition();
   const [diagnoses, setDiagnoses] = useState<string[]>([]);
   const [triageResponse, setTriageResponse] = useState<string>("");
   const [triageLanguage, setTriageLanguage] = useState<"English" | "Hindi" | "Assamese">("English");
   const { toast } = useToast();
+  const router = useRouter();
+  const addPatient = usePatientStore((state) => state.addPatient);
+
 
   const form = useForm<PatientFormValues>({
     resolver: zodResolver(patientFormSchema),
@@ -70,12 +75,18 @@ export function PatientForm() {
     },
   });
 
-  const onSubmit = (data: PatientFormValues) => {
+  const handleGetDiagnosis = () => {
+    const symptoms = form.getValues("symptoms");
+    if(!symptoms || symptoms.length < 10) {
+      form.setError("symptoms", { message: "Please describe symptoms in at least 10 characters to get a diagnosis."});
+      return;
+    }
+
     setDiagnoses([]);
     setTriageResponse("");
-    startTransition(async () => {
+    startDiagnosisTransition(async () => {
       try {
-        const result = await suggestDiagnosis({ symptoms: data.symptoms });
+        const result = await suggestDiagnosis({ symptoms });
         setDiagnoses(result.diagnoses);
       } catch (error) {
         console.error("Diagnosis error:", error);
@@ -87,6 +98,21 @@ export function PatientForm() {
       }
     });
   };
+
+  const onSubmit = (data: PatientFormValues) => {
+    addPatient({
+      id: `PAT${Math.floor(1000 + Math.random() * 9000)}`,
+      ...data,
+      risk: diagnoses.length > 0 ? 'Medium' : 'Low', // Example risk logic
+      lastVisit: new Date().toISOString().split('T')[0],
+    });
+    toast({
+      title: "Patient Saved",
+      description: `${data.name} has been added to the patient list.`,
+    });
+    router.push('/patients');
+  };
+
 
   const handleGenerateTriage = () => {
     const symptoms = form.getValues("symptoms");
@@ -222,16 +248,20 @@ export function PatientForm() {
               />
             </div>
           </CardContent>
-          <CardFooter className="flex justify-end">
-             <Button type="submit" disabled={isPending}>
-              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          <CardFooter className="flex flex-col md:flex-row items-center gap-4">
+             <Button type="button" onClick={handleGetDiagnosis} disabled={isDiagnosisPending} variant="outline">
+              {isDiagnosisPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               <Stethoscope className="mr-2 h-4 w-4" />
               Get AI Diagnosis
+            </Button>
+            <Button type="submit" className="w-full md:w-auto">
+              <Save className="mr-2 h-4 w-4" />
+              Save Patient Profile
             </Button>
           </CardFooter>
         </Card>
 
-        {isPending && (
+        {isDiagnosisPending && (
           <div className="flex items-center justify-center gap-2 text-muted-foreground p-8">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
             <span className="text-lg">Analyzing symptoms...</span>
