@@ -43,7 +43,9 @@ Patient Details:
 - Gender: {{{gender}}}
 - Symptoms: {{{symptoms}}}
 
-Based on these details, provide a personalized health recommendation. The recommendation should be clear, actionable, and formatted in Markdown. Include advice on home care, when to seek further help, and potential next steps.`,
+Based on these details, provide a personalized health recommendation. The recommendation should be clear, actionable, and formatted in Markdown. Include advice on home care, when to seek further help, and potential next steps.
+
+When relevant, include useful external links to reputable medical sources (like WHO, CDC, WebMD, etc.) using Markdown format [Link Text](URL).`,
 });
 
 const personalRecommendationFlow = ai.defineFlow(
