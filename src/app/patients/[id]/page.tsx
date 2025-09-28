@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import type { Patient } from '@/lib/types';
+import { PersonalRecommendation } from '@/components/personal-recommendation';
 
 const getRiskBadgeVariant = (risk: Patient['risk']) => {
     if (risk === 'High') return 'destructive';
@@ -98,9 +99,11 @@ export default function PatientDetailPage() {
                  </CardHeader>
                  <CardContent>
                     <p className="italic rounded-md bg-muted p-4">"{symptoms}"</p>
-                    {/* Placeholder for future AI Diagnosis details */}
                  </CardContent>
             </Card>
+        </div>
+        <div>
+            <PersonalRecommendation patient={patient} />
         </div>
       </div>
     </AppLayout>
