@@ -26,16 +26,31 @@ Swasth AI is a modern, responsive web application designed to empower rural heal
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack & Languages
 
-- **Framework:** [Next.js](https://nextjs.org/) (App Router)
-- **Language:** [TypeScript](https://www.typescriptlang.org/)
-- **Generative AI:** [Google Gemini](https://deepmind.google/technologies/gemini/) via [Genkit](https://firebase.google.com/docs/genkit)
-- **UI Components:** [ShadCN UI](https://ui.shadcn.com/)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-- **State Management:** [Zustand](https://github.com/pmndrs/zustand)
-- **Form Handling:** [React Hook Form](https://react-hook-form.com/) & [Zod](https://zod.dev/)
-- **Icons:** [Lucide React](https://lucide.dev/)
+This project is built with a modern, production-ready tech stack, prioritizing performance, developer experience, and scalability.
+
+- **Languages:**
+  - **TypeScript (98%):** The primary language used for its strong typing, which helps prevent bugs and improves code quality.
+  - **CSS & Other (2%):** Used for global styling definitions and configuration files.
+
+- **Core Framework:**
+  - **[Next.js](https://nextjs.org/) (App Router):** For building a fast, server-rendered React application.
+
+- **Generative AI:**
+  - **[Google Gemini](https://deepmind.google/technologies/gemini/):** The underlying large language model for all AI features.
+  - **[Genkit](https://firebase.google.com/docs/genkit):** The open-source framework used to build, deploy, and monitor the AI flows.
+
+- **UI & Styling:**
+  - **[React](https://react.dev/):** The core library for building the user interface.
+  - **[ShadCN UI](https://ui.shadcn.com/):** A collection of beautifully designed, accessible, and reusable components.
+  - **[Tailwind CSS](https://tailwindcss.com/):** A utility-first CSS framework for rapid styling.
+  - **[Lucide React](https://lucide.dev/):** For clean and consistent icons.
+
+- **State Management & Forms:**
+  - **[Zustand](https://github.com/pmndrs/zustand):** For simple, lightweight global state management (e.g., patient list).
+  - **[React Hook Form](https://react-hook-form.com/):** For performant and flexible form handling.
+  - **[Zod](https://zod.dev/):** For schema validation to ensure data integrity.
 
 ---
 
