@@ -1,8 +1,9 @@
+
 # Swasth AI: AI-Powered Healthcare Assistant
 
 Swasth AI is a modern, responsive web application designed to empower rural health workers with AI-driven diagnostic assistance and patient management tools. Built with Next.js and powered by Google's Gemini model through Genkit, this app provides a comprehensive suite of features to aid in preliminary diagnosis, patient tracking, and health education.
 
-![Swasth AI Dashboard](https://storage.googleapis.com/static.aiforge.dev/docs-and-examples/swasth-ai-screenshot.png)
+![Swasth AI Dashboard](https://picsum.photos/seed/dashboard/1200/630)
 
 ---
 
