@@ -32,15 +32,13 @@ This project is built with a modern, production-ready tech stack, prioritizing p
 
 | Category | Tools |
 |-----------|-------|
-| **Frontend Framework** | [React](https://react.dev/) (v18) + [Vite](https://vitejs.dev/) for ultra-fast dev builds |
-| **Backend** | [Flask](https://flask.palletsprojects.com/) (Python 3.12) REST API for Gemini integration |
-| **Languages** | **TypeScript (90%)** · **Python (8%)** · **CSS (2%)** — strong-typed, scalable, and maintainable codebase |
-| **AI Integration** | [Google Gemini](https://deepmind.google/technologies/gemini/) via REST API for generative health advice |
-| **UI & Styling** | [Tailwind CSS](https://tailwindcss.com/) + [ShadCN UI](https://ui.shadcn.com/) + [Lucide React](https://lucide.dev/) for modern responsive UX |
-| **State Management** | [Zustand](https://github.com/pmndrs/zustand) – lightweight, predictable store for patient data |
-| **Forms & Validation** | [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/) for robust schema validation |
-| **Data Persistence** | Browser LocalStorage for offline field use |
-| **Hosting Options** | **Frontend:** [Vercel](https://vercel.com/) / [Netlify](https://netlify.com/) · **Backend:** [Render](https://render.com/) / [Railway](https://railway.app/) (free tiers supported) |
+| **Core Framework** | [Next.js](https://nextjs.org/) (with App Router) |
+| **Language** | TypeScript (90%) · Python (8%) · CSS (2%) |
+| **AI Integration** | [Google Gemini](https://deepmind.google/technologies/gemini/), [Genkit](https://firebase.google.com/docs/genkit) |
+| **UI Library** | [React](https://react.dev/) |
+| **Styling** | [Tailwind CSS](https://tailwindcss.com/), [ShadCN UI](https://ui.shadcn.com/), [Lucide React](https://lucide.dev/) |
+| **State Management** | [Zustand](https://github.com/pmndrs/zustand) |
+| **Forms & Validation** | [React Hook Form](https://react-hook-form.com/), [Zod](https://zod.dev/) |
 
 
 ---
