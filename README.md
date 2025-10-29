@@ -3,7 +3,7 @@
 
 Swasth AI is a modern, responsive web application designed to empower rural health workers with AI-driven diagnostic assistance and patient management tools. Built with Next.js and powered by Google's Gemini model through Genkit, this app provides a comprehensive suite of features to aid in preliminary diagnosis, patient tracking, and health education.
 
-![Swasth AI Dashboard](https://picsum.photos/seed/dashboard/1200/630)
+![Swasth AI Dashboard](https://github.com/partha392/Swasth-AI/blob/master/image.png?raw=true)
 
 ---
 
@@ -26,31 +26,22 @@ Swasth AI is a modern, responsive web application designed to empower rural heal
 
 ---
 
-## 🛠️ Tech Stack & Languages
+## 🛠️ Tech Stack
 
 This project is built with a modern, production-ready tech stack, prioritizing performance, developer experience, and scalability.
 
-- **Languages:**
-  - **TypeScript (98%):** The primary language used for its strong typing, which helps prevent bugs and improves code quality.
-  - **CSS & Other (2%):** Used for global styling definitions and configuration files.
+| Category | Tools |
+|-----------|-------|
+| **Frontend Framework** | [React](https://react.dev/) (v18) + [Vite](https://vitejs.dev/) for ultra-fast dev builds |
+| **Backend** | [Flask](https://flask.palletsprojects.com/) (Python 3.12) REST API for Gemini integration |
+| **Languages** | **TypeScript (90%)** · **Python (8%)** · **CSS (2%)** — strong-typed, scalable, and maintainable codebase |
+| **AI Integration** | [Google Gemini](https://deepmind.google/technologies/gemini/) via REST API for generative health advice |
+| **UI & Styling** | [Tailwind CSS](https://tailwindcss.com/) + [ShadCN UI](https://ui.shadcn.com/) + [Lucide React](https://lucide.dev/) for modern responsive UX |
+| **State Management** | [Zustand](https://github.com/pmndrs/zustand) – lightweight, predictable store for patient data |
+| **Forms & Validation** | [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/) for robust schema validation |
+| **Data Persistence** | Browser LocalStorage for offline field use |
+| **Hosting Options** | **Frontend:** [Vercel](https://vercel.com/) / [Netlify](https://netlify.com/) · **Backend:** [Render](https://render.com/) / [Railway](https://railway.app/) (free tiers supported) |
 
-- **Core Framework:**
-  - **[Next.js](https://nextjs.org/) (App Router):** For building a fast, server-rendered React application.
-
-- **Generative AI:**
-  - **[Google Gemini](https://deepmind.google/technologies/gemini/):** The underlying large language model for all AI features.
-  - **[Genkit](https://firebase.google.com/docs/genkit):** The open-source framework used to build, deploy, and monitor the AI flows.
-
-- **UI & Styling:**
-  - **[React](https://react.dev/):** The core library for building the user interface.
-  - **[ShadCN UI](https://ui.shadcn.com/):** A collection of beautifully designed, accessible, and reusable components.
-  - **[Tailwind CSS](https://tailwindcss.com/):** A utility-first CSS framework for rapid styling.
-  - **[Lucide React](https://lucide.dev/):** For clean and consistent icons.
-
-- **State Management & Forms:**
-  - **[Zustand](https://github.com/pmndrs/zustand):** For simple, lightweight global state management (e.g., patient list).
-  - **[React Hook Form](https://react-hook-form.com/):** For performant and flexible form handling.
-  - **[Zod](https://zod.dev/):** For schema validation to ensure data integrity.
 
 ---
 
